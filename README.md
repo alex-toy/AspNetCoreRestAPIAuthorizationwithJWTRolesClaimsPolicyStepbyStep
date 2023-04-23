@@ -2,6 +2,8 @@
 
 ASP.NET Core authorization provides a simple, declarative role and a rich policy-based model. Authorization is expressed in requirements, and handlers evaluate a user's claims against requirements. Imperative checks can be based on simple policies or policies which evaluate both the user identity and properties of the resource that the user is attempting to access.
 
+!!! TO DO : Add connection to SQL DB
+
 ## Migration
 
 In **Package Manager Console** :
@@ -20,6 +22,10 @@ Update-Database
 ### Login
 
 <img src="/pictures/refresh_token2.png" title="refresh token"  width="800">
+
+### Refresh
+
+<img src="/pictures/token_used.png" title="token has been used error"  width="800">
 
 
 ## Setup Controller
@@ -45,6 +51,7 @@ Update-Database
 ### Remove User from Role
 
 <img src="/pictures/remove_user_from_role.png" title="remove user from role"  width="800">
+
 
 ## Authentication Controller
 

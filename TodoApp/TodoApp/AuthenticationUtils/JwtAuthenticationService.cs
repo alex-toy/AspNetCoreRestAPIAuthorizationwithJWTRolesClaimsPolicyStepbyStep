@@ -119,7 +119,7 @@ namespace TodoApp.AuthenticationUtils
                     }
                 };
 
-                var storedToken = await _apiDbContext.RefreshTokens.FirstOrDefaultAsync(x => x.Token == tokenRequest.Token);
+                var storedToken = await _apiDbContext.RefreshTokens.FirstOrDefaultAsync(x => x.Token == tokenRequest.RefreshToken);
                 if (storedToken == null) return new AuthResult()
                 {
                     IsSuccess = false,
