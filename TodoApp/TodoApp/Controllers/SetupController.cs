@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoApp.Data;
@@ -35,7 +36,7 @@ namespace TodoApp.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateRole(string name)
         {
-            var roleExists = await _roleManager.RoleExistsAsync(name);
+            bool roleExists = await _roleManager.RoleExistsAsync(name);
             if (roleExists) return BadRequest(new { error = "role already exists" });
 
             var identityRole = new IdentityRole(name);
@@ -57,8 +58,41 @@ namespace TodoApp.Controllers
         [Route("GetAllUsers")]
         public async Task<ActionResult> GetAllUsers()
         {
-            var users = await _userManager.Users.ToListAsync();
+            List<IdentityUser> users = await _userManager.Users.ToListAsync();
             return Ok(users);
+        }
+
+        [HttpPost]
+        [Route("AddUserToRole")]
+        public async Task<ActionResult> AddUserToRole(string email, string roleName)
+        {
+            IdentityUser user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                string errorMessage = $"The user {email} doesn't exist.";
+                _logger.LogInformation(errorMessage);
+                return BadRequest(new { error = errorMessage });
+            }
+
+            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExists)
+            {
+                string errorMessage = $"Role {roleName} doesn't exist.";
+                _logger.LogInformation(errorMessage);
+                return BadRequest(new { error = errorMessage });
+            }
+
+            IdentityResult result = await _userManager.AddToRoleAsync(user, roleName);
+            if (!result.Succeeded)
+            {
+                string errorMessage = $"The user {user.UserName} has not been added successfully to role {roleName}.";
+                _logger.LogInformation(errorMessage);
+                return BadRequest(new { error = errorMessage });
+            }
+
+            string message = $"The user {user.UserName} has been added successfully to role {roleName}.";
+            _logger.LogInformation(message);
+            return Ok(new { result = message });
         }
     }
 }
