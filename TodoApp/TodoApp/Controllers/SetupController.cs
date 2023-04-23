@@ -94,5 +94,22 @@ namespace TodoApp.Controllers
             _logger.LogInformation(message);
             return Ok(new { result = message });
         }
+
+        [HttpGet]
+        [Route("GetUserRole")]
+        public async Task<ActionResult> GetUserRole(string email)
+        {
+            IdentityUser user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                string errorMessage = $"The user {email} doesn't exist.";
+                _logger.LogInformation(errorMessage);
+                return BadRequest(new { error = errorMessage });
+            }
+
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+
+            return Ok(roles);
+        }
     }
 }
