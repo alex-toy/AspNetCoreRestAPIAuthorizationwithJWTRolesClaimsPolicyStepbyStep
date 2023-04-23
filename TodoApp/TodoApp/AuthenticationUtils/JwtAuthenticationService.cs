@@ -23,7 +23,7 @@ namespace TodoApp.AuthenticationUtils
             _userManager = userManager;
         }
 
-        public string GenerateToken(IdentityUser user)
+        public string GenerateJwtToken(IdentityUser user)
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             byte[] secret = Encoding.UTF8.GetBytes(_jwtConfig.Secret);
@@ -32,7 +32,7 @@ namespace TodoApp.AuthenticationUtils
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(60),
+                Expires = DateTime.UtcNow.AddSeconds(10),
                 SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
             };
 

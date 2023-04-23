@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoApp.AuthenticationUtils;
 using TodoApp.Configuration;
+using TodoApp.Data;
 using TodoApp.Models.DTOs.Requests;
 using TodoApp.Models.DTOs.Responses;
 
@@ -16,14 +19,22 @@ namespace TodoApp.Controllers
     public class AuthManagementController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IJwtAuthenticationService _jwtAuthService;
+        private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly JwtConfig _jwtConfig;
+        private readonly IJwtAuthenticationService _jwtAuthService;
+        private readonly ApiDbContext _apiDbContext;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ILogger<AuthManagementController> _logger;
 
-        public AuthManagementController(UserManager<IdentityUser> userManager, IOptionsMonitor<JwtConfig> optionsMonitor, IJwtAuthenticationService jwtAutService)
+        public AuthManagementController(UserManager<IdentityUser> userManager, IOptionsMonitor<JwtConfig> optionsMonitor, IJwtAuthenticationService jwtAutService, ApiDbContext apiDbContext, RoleManager<IdentityRole> roleManager, ILogger<AuthManagementController> logger, TokenValidationParameters tokenValidationParameters)
         {
+            _logger = logger;
+            _roleManager = roleManager;
             _userManager = userManager;
             _jwtConfig = optionsMonitor.CurrentValue;
+            _tokenValidationParameters = tokenValidationParameters;
             _jwtAuthService = jwtAutService;
+            _apiDbContext = apiDbContext;
         }
 
         [HttpPost]
@@ -51,7 +62,9 @@ namespace TodoApp.Controllers
                 IsSuccess = false
             });
 
-            string token = _jwtAuthService.GenerateToken(newUser);
+            await _userManager.AddToRoleAsync(newUser, "AppUser");
+
+            string token = _jwtAuthService.GenerateJwtToken(newUser);
             return Ok(new RegistrationResponse()
             {
                 IsSuccess = true,
@@ -85,7 +98,7 @@ namespace TodoApp.Controllers
                 IsSuccess = false
             });
 
-            var token = _jwtAuthService.GenerateToken(userDb);
+            var token = _jwtAuthService.GenerateJwtToken(userDb);
             return Ok(new RegistrationResponse()
             {
                 IsSuccess = true,

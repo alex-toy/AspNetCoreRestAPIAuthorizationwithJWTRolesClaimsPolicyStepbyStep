@@ -111,5 +111,38 @@ namespace TodoApp.Controllers
 
             return Ok(roles);
         }
+
+        [HttpPost]
+        [Route("RemoveUserFromRole")]
+        public async Task<ActionResult> RemoveUserFromRole(string email, string roleName)
+        {
+            IdentityUser user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                string errorMessage = $"The user {email} doesn't exist.";
+                _logger.LogInformation(errorMessage);
+                return BadRequest(new { error = errorMessage });
+            }
+
+            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExists)
+            {
+                string errorMessage = $"Role {roleName} doesn't exist.";
+                _logger.LogInformation(errorMessage);
+                return BadRequest(new { error = errorMessage });
+            }
+
+            IdentityResult result = await _userManager.RemoveFromRoleAsync(user, roleName);
+            if (!result.Succeeded)
+            {
+                string errorMessage = $"The user {user.UserName} has not been removed successfully to role {roleName}.";
+                _logger.LogInformation(errorMessage);
+                return BadRequest(new { error = errorMessage });
+            }
+
+            string message = $"The user {user.UserName} has been removed successfully to role {roleName}.";
+            _logger.LogInformation(message);
+            return Ok(new { result = message });
+        }
     }
 }

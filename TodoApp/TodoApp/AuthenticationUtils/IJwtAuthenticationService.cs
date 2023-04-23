@@ -7,7 +7,7 @@ namespace TodoApp.AuthenticationUtils
     public interface IJwtAuthenticationService
     {
         Task<bool> IsAuthenticated(IdentityUser existingUser, UserLoginRequest login);
-        string GenerateToken(IdentityUser user);
+        string GenerateJwtToken(IdentityUser user);
         //IdentityUser GetCurrentUserFromHttpContext(HttpContext httpContext);
     }
 }
