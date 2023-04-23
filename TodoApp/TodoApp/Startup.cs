@@ -40,6 +40,7 @@ namespace TodoApp
                 ValidateLifetime = true,
                 RequireExpirationTime = false,
             };
+            services.AddSingleton(tokenValidationParams);
 
             services.AddAuthentication(options =>
             {

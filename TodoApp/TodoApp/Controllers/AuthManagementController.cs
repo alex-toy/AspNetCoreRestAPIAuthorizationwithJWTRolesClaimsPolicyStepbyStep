@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoApp.AuthenticationUtils;
@@ -64,12 +66,8 @@ namespace TodoApp.Controllers
 
             await _userManager.AddToRoleAsync(newUser, "AppUser");
 
-            string token = _jwtAuthService.GenerateJwtToken(newUser);
-            return Ok(new RegistrationResponse()
-            {
-                IsSuccess = true,
-                Token = token,
-            });
+            AuthResult jwtToken = await _jwtAuthService.GenerateJwtToken(newUser);
+            return Ok(jwtToken);
         }
 
         [HttpPost]
@@ -98,12 +96,28 @@ namespace TodoApp.Controllers
                 IsSuccess = false
             });
 
-            var token = _jwtAuthService.GenerateJwtToken(userDb);
-            return Ok(new RegistrationResponse()
+            var jwtToken = await _jwtAuthService.GenerateJwtToken(userDb);
+            return Ok(jwtToken);
+        }
+
+        [HttpPost]
+        [Route("RefreshToken")]
+        public async Task<IActionResult> RefreshToken([FromBody] TokenRequest tokenRequest)
+        {
+            if (!ModelState.IsValid) return BadRequest(new RegistrationResponse()
             {
-                IsSuccess = true,
-                Token = token,
+                Errors = new List<string> { "invalid payload" },
+                IsSuccess = false
             });
+
+            AuthResult result = await _jwtAuthService.VerifyAndGenerateToken(tokenRequest);
+            if (result == null) return BadRequest(new RegistrationResponse()
+            {
+                Errors = new List<string> { "invalid token" },
+                IsSuccess = false
+            });
+
+            return Ok(result);
         }
     }
 }
