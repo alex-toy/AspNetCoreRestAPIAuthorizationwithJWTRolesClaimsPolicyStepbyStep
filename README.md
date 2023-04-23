@@ -1,26 +1,22 @@
 # Asp Net Core - Rest API Authorization with JWT (Roles Vs Claims Vs Policy)
 
-### Install packages 
+ASP.NET Core authorization provides a simple, declarative role and a rich policy-based model. Authorization is expressed in requirements, and handlers evaluate a user's claims against requirements. Imperative checks can be based on simple policies or policies which evaluate both the user identity and properties of the resource that the user is attempting to access.
+
+## Install packages 
 - in GrpcServer
 ```
 System.IdentityModel.Tokens.Jwt
 Microsoft.AspNetCore.Authentication.JwtBearer
 ```
 
-- in GrpcClient
-```
-Grpc.Net.Client
-Google.Protobuf
-Grpc.Tools
-```
+## Setup Controller
 
-### Result
+### Get Roles
 
-<img src="/pictures/calculations.png" title="calculations"  width="800">
+<img src="/pictures/get_roles.png" title="get roles"  width="800">
+
+### Get Users
+
+<img src="/pictures/get_all_users.png" title="get all users"  width="800">
 
 
-## AspNetCore gRPC Deadline
-
-A **Deadline** allows a gRPC client to specify how long it will wait for a call to complete. When a deadline is exceeded, the call will get cancelled. Setting a deadline is important because it provides an upper limit on how long a call can run for. It stops misbehaving services from running forever and exhausting server resources. Deadlines are a useful tool for building reliable apps and should be configured.
-
-<img src="/pictures/delay.png" title="delay"  width="400">

@@ -52,7 +52,7 @@ namespace TodoApp
              });
 
             services
-                .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApiDbContext>();
 
             services.AddTransient<IJwtAuthenticationService, JwtAuthenticationService>();
