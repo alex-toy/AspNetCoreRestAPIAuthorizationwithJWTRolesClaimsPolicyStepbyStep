@@ -48,6 +48,11 @@ We can retrieve the meaning of the token. Currently we don't have the roles incl
 <img src="/pictures/add_user_to_role2.png" title="add user to role"  width="800">
 <img src="/pictures/add_user_to_role3.png" title="add user to role"  width="800">
 
+### Add roles to token
+
+<img src="/pictures/token_with_roles.png" title="token with roles"  width="800">
+
+
 ### Get Users
 
 <img src="/pictures/get_user_roles.png" title="get user roles"  width="800">

@@ -22,13 +22,15 @@ namespace TodoApp.AuthenticationUtils
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _apiDbContext;
         private readonly TokenValidationParameters _tokenValidationParameters;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public JwtAuthenticationService(IOptionsMonitor<JwtConfig> optionsMonitor, UserManager<IdentityUser> userManager, ApplicationDbContext apiDbContext, TokenValidationParameters tokenValidationParameters)
+        public JwtAuthenticationService(IOptionsMonitor<JwtConfig> optionsMonitor, UserManager<IdentityUser> userManager, ApplicationDbContext apiDbContext, TokenValidationParameters tokenValidationParameters, RoleManager<IdentityRole> roleManager)
         {
             _jwtConfig = optionsMonitor.CurrentValue;
             _userManager = userManager;
             _apiDbContext = apiDbContext;
             _tokenValidationParameters = tokenValidationParameters;
+            _roleManager = roleManager;
         }
 
         public async Task<AuthResult> GenerateJwtToken(IdentityUser user)
@@ -36,7 +38,7 @@ namespace TodoApp.AuthenticationUtils
             JwtSecurityTokenHandler jwtTokenHandler = new JwtSecurityTokenHandler();
             byte[] secret = Encoding.UTF8.GetBytes(_jwtConfig.Secret);
             var key = new SymmetricSecurityKey(secret);
-            var claims = GetClaims(user);
+            var claims = await GetAllValidClaims(user);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
@@ -93,6 +95,36 @@ namespace TodoApp.AuthenticationUtils
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
+        }
+
+        private async Task<List<Claim>> GetAllValidClaims(IdentityUser user)
+        {
+            var _options = new IdentityOptions();
+            var claims = new List<Claim>
+            {
+                new Claim("Id", user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            IList<Claim> userClaims = await _userManager.GetClaimsAsync(user);
+            claims.AddRange(userClaims);
+
+            IList<string> userRoles = await _userManager.GetRolesAsync(user);
+
+            foreach (var userRole in userRoles)
+            {
+                IdentityRole identityRole = await _roleManager.FindByNameAsync(userRole);
+                if (identityRole == null) continue;
+
+                claims.Add(new Claim(ClaimTypes.Role, userRole));
+                IList<Claim> roleClaims = await _roleManager.GetClaimsAsync(identityRole);
+                claims.AddRange(roleClaims);
+            }
+
+            return claims;
         }
 
         public async Task<AuthResult> VerifyAndGenerateToken(TokenRequest tokenRequest)
