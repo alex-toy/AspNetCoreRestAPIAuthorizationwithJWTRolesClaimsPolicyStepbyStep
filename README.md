@@ -73,3 +73,7 @@ Update-Database
 
 <img src="/pictures/token_has_been_used.png" title="token has been used"  width="800">
 
+- Token successfully refreshed :
+
+<img src="/pictures/token_successfully_refreshed.png" title="token successfully refreshed"  width="800">
+
