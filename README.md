@@ -57,7 +57,16 @@ Update-Database
 
 ### Register new User
 
+- Register :
+
 <img src="/pictures/register_new_user.png" title="register new user"  width="800">
+
+- Get user role :
+
 <img src="/pictures/register_new_user2.png" title="register new user"  width="800">
+
+- Token not yet expired :
+
+<img src="/pictures/token_not_yet_expired.png" title="token not yet expired"  width="800">
 
 
