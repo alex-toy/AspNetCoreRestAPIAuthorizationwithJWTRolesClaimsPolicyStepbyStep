@@ -23,6 +23,10 @@ Update-Database
 
 <img src="/pictures/refresh_token2.png" title="refresh token"  width="800">
 
+We can retrieve the meaning of the token. Currently we don't have the roles included in the token :
+
+<img src="/pictures/token_decode.png" title="token decode"  width="800">
+
 ### Refresh
 
 <img src="/pictures/token_used.png" title="token has been used error"  width="800">
