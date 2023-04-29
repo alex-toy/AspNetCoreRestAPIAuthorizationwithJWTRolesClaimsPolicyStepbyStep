@@ -74,6 +74,7 @@ namespace TodoApp.Controllers
         // POST: api/Todo
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Policy = "DepartmentPolicy")]
         [Route("Create")]
         public async Task<ActionResult<ItemData>> Create(ItemData itemData)
         {

@@ -2,8 +2,6 @@
 
 ASP.NET Core authorization provides a simple, declarative role and a rich policy-based model. Authorization is expressed in requirements, and handlers evaluate a user's claims against requirements. Imperative checks can be based on simple policies or policies which evaluate both the user identity and properties of the resource that the user is attempting to access.
 
-!!! TO DO : Add connection to SQL DB
-
 ## Migration
 
 In **Package Manager Console** :
@@ -111,4 +109,19 @@ We can retrieve the meaning of the token. Currently we don't have the roles incl
 <img src="/pictures/add_claim_to_user.png" title="add claim to user"  width="800">
 <img src="/pictures/add_claim_to_user2.png" title="add claim to user"  width="800">
 <img src="/pictures/add_claim_to_user3.png" title="add claim to user"  width="800">
+
+
+## Policy
+
+- user not authorized because lacking Department policy :
+
+<img src="/pictures/policy.png" title="policy"  width="800">
+
+- Add department policy to that user :
+
+<img src="/pictures/policy2.png" title="policy"  width="800">
+
+- now the user is authorized :
+
+<img src="/pictures/policy3.png" title="policy"  width="800">
 

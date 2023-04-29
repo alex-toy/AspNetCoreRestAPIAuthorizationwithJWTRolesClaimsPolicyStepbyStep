@@ -58,9 +58,9 @@ namespace TodoApp.Controllers
 
             IdentityResult result = await _userManager.AddClaimAsync(user, userClaim);
 
-            if (!result.Succeeded) return BadRequest(new { error = $"{claimName} could not be added to user {user.Email}" });
+            if (!result.Succeeded) return BadRequest(new { error = $"claim {claimName} could not be added to user {user.Email}" });
 
-            return Ok(new { result = $"{claimName} was successfully be adde to user {user.Email}" });
+            return Ok(new { result = $"claim {claimName} was successfully be added to user {user.Email}" });
         }
     }
 }

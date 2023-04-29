@@ -66,6 +66,11 @@ namespace TodoApp
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoApp", Version = "v1" });
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DepartmentPolicy", policy => policy.RequireClaim("department"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
