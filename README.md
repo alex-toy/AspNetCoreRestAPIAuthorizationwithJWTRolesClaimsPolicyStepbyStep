@@ -100,5 +100,15 @@ We can retrieve the meaning of the token. Currently we don't have the roles incl
 - Remove user from role :
 
 <img src="/pictures/remove_user_from_role.png" title="remove user from role"  width="800">
+
+- User cannot create todo because lacking required AppUser role :
+
 <img src="/pictures/user_no_required_role.png" title="user forbidden because no required role"  width="800">
+
+
+## ClaimsSetup Controller
+
+<img src="/pictures/add_claim_to_user.png" title="add claim to user"  width="800">
+<img src="/pictures/add_claim_to_user2.png" title="add claim to user"  width="800">
+<img src="/pictures/add_claim_to_user3.png" title="add claim to user"  width="800">
 

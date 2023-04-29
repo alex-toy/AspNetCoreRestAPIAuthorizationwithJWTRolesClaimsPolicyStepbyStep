@@ -74,7 +74,7 @@ namespace TodoApp.Controllers
                 return BadRequest(new { error = errorMessage });
             }
 
-            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+            bool roleExists = await _roleManager.RoleExistsAsync(roleName);
             if (!roleExists)
             {
                 string errorMessage = $"Role {roleName} doesn't exist.";
