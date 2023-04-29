@@ -86,3 +86,19 @@ We can retrieve the meaning of the token. Currently we don't have the roles incl
 
 <img src="/pictures/token_successfully_refreshed.png" title="token successfully refreshed"  width="800">
 
+
+## To Do Controller
+
+- Todo without authentication :
+
+<img src="/pictures/todo_without_authentication.png" title="todo without authentication"  width="800">
+
+- Todo with authentication :
+
+<img src="/pictures/todo_with_authentication.png" title="todo with authentication"  width="800">
+
+- Remove user from role :
+
+<img src="/pictures/remove_user_from_role.png" title="remove user from role"  width="800">
+<img src="/pictures/user_no_required_role.png" title="user forbidden because no required role"  width="800">
+
