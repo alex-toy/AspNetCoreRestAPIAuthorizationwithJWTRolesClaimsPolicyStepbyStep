@@ -69,4 +69,7 @@ Update-Database
 
 <img src="/pictures/token_not_yet_expired.png" title="token not yet expired"  width="800">
 
+- Token has been used :
+
+<img src="/pictures/token_has_been_used.png" title="token has been used"  width="800">
 
