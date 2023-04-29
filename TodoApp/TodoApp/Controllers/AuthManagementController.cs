@@ -24,11 +24,11 @@ namespace TodoApp.Controllers
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly JwtConfig _jwtConfig;
         private readonly IJwtAuthenticationService _jwtAuthService;
-        private readonly ApiDbContext _apiDbContext;
+        private readonly ApplicationDbContext _apiDbContext;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<AuthManagementController> _logger;
 
-        public AuthManagementController(UserManager<IdentityUser> userManager, IOptionsMonitor<JwtConfig> optionsMonitor, IJwtAuthenticationService jwtAutService, ApiDbContext apiDbContext, RoleManager<IdentityRole> roleManager, ILogger<AuthManagementController> logger, TokenValidationParameters tokenValidationParameters)
+        public AuthManagementController(UserManager<IdentityUser> userManager, IOptionsMonitor<JwtConfig> optionsMonitor, IJwtAuthenticationService jwtAutService, ApplicationDbContext apiDbContext, RoleManager<IdentityRole> roleManager, ILogger<AuthManagementController> logger, TokenValidationParameters tokenValidationParameters)
         {
             _logger = logger;
             _roleManager = roleManager;

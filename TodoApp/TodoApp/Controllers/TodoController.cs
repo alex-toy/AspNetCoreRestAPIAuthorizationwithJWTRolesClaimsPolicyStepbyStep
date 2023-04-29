@@ -15,9 +15,9 @@ namespace TodoApp.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TodoController : ControllerBase
     {
-        private readonly ApiDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public TodoController(ApiDbContext context)
+        public TodoController(ApplicationDbContext context)
         {
             _context = context;
         }

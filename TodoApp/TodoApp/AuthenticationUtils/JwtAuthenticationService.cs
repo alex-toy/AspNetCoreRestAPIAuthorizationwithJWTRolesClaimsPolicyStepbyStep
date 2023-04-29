@@ -20,10 +20,10 @@ namespace TodoApp.AuthenticationUtils
     {
         private readonly JwtConfig _jwtConfig;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly ApiDbContext _apiDbContext;
+        private readonly ApplicationDbContext _apiDbContext;
         private readonly TokenValidationParameters _tokenValidationParameters;
 
-        public JwtAuthenticationService(IOptionsMonitor<JwtConfig> optionsMonitor, UserManager<IdentityUser> userManager, ApiDbContext apiDbContext, TokenValidationParameters tokenValidationParameters)
+        public JwtAuthenticationService(IOptionsMonitor<JwtConfig> optionsMonitor, UserManager<IdentityUser> userManager, ApplicationDbContext apiDbContext, TokenValidationParameters tokenValidationParameters)
         {
             _jwtConfig = optionsMonitor.CurrentValue;
             _userManager = userManager;

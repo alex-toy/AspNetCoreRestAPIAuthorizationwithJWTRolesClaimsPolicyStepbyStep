@@ -28,7 +28,9 @@ namespace TodoApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
-            services.AddDbContext<ApiDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnectionString")));
+            //services.AddDbContext<ApiDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("ConnectionString")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
+ 
 
             byte[] key = Encoding.UTF8.GetBytes(Configuration["JwtConfig:Secret"]);
             var tokenValidationParams = new TokenValidationParameters
@@ -56,7 +58,7 @@ namespace TodoApp
 
             services
                 .AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApiDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddTransient<IJwtAuthenticationService, JwtAuthenticationService>();
             services.AddControllers();
